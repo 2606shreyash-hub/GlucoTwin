@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Pytest
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# Environment / secrets
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Raw datasets
+data/raw/*
+!data/raw/README.md
+
+# Large/generated processed datasets
+data/processed/*.csv
+
+# Model binaries
+artifacts/*.joblib
+artifacts/*.pkl
+artifacts/*.pickle
+
+# Keep model configuration
+!artifacts/model_config.json
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp

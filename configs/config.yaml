@@ -1,0 +1,18 @@
+project_name: GlucoTwin
+
+prediction:
+  glucose_threshold_mg_dl: 70.0
+  horizon_minutes: 30
+  sampling_minutes: 5
+
+validation:
+  final_test_patients:
+    - HUPA0002P
+    - HUPA0009P
+    - HUPA0011P
+    - HUPA0024P
+    - HUPA0026P
+
+data:
+  separator: ";"
+  invalid_negative_bolus: exclude_from_exposure
