@@ -278,6 +278,65 @@ class ReplayEngine:
 
         return state
 
+    def get_timeline(
+        self,
+        patient_id: str,
+        start_timestamp: str | None = None,
+        end_timestamp: str | None = None,
+    ) -> list[dict]:
+        """Return historical observations for a patient.
+
+        Only observations within the requested time range are returned.
+        This endpoint exposes observed data only; it does not reveal
+        future observations beyond the requested end timestamp.
+        """
+
+        df = self._ensure_data_loaded()
+
+        if patient_id not in df["patient_id"].unique():
+            raise ValueError(f"Unknown patient_id: {patient_id}")
+
+        patient = df[df["patient_id"] == patient_id].copy()
+
+        patient["time"] = pd.to_datetime(patient["time"])
+
+        if start_timestamp is not None:
+            start = pd.to_datetime(start_timestamp)
+            patient = patient[patient["time"] >= start]
+
+        if end_timestamp is not None:
+            end = pd.to_datetime(end_timestamp)
+            patient = patient[patient["time"] <= end]
+
+        if patient.empty:
+            return []
+
+        timeline = []
+
+        for _, row in patient.iterrows():
+            timeline.append(
+                {
+                    "timestamp": row["time"].isoformat(),
+                    "glucose_mg_dl": self._safe_float(row["glucose"]),
+                    "heart_rate_bpm": self._safe_float(
+                        row.get("heart_rate")
+                    ),
+                    "steps": self._safe_float(row.get("steps")),
+                    "calories": self._safe_float(row.get("calories")),
+                    "basal_rate": self._safe_float(
+                        row.get("basal_rate")
+                    ),
+                    "bolus_volume_delivered": self._safe_float(
+                        row.get("bolus_volume_delivered")
+                    ),
+                    "carb_input": self._safe_float(
+                        row.get("carb_input")
+                    ),
+                }
+            )
+
+        return timeline
+
     @staticmethod
     def _safe_float(value: Any) -> float | None:
         """Convert numeric values safely for API/dashboard use."""
