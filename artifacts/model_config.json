@@ -1,0 +1,53 @@
+{
+  "project": "GlucoTwin",
+  "prediction_target": "Probability that blood glucose will fall below 70 mg/dL at any point within the next 30 minutes.",
+  "target_column": "hypo_next_30m",
+  "hypoglycemia_threshold_mg_dl": 70,
+  "prediction_horizon_minutes": 30,
+  "sampling_interval_minutes": 5,
+  "alert_threshold": 0.5,
+  "model": {
+    "type": "RandomForestClassifier",
+    "n_estimators": 500,
+    "max_features": "sqrt",
+    "min_samples_leaf": 20,
+    "random_state": 42,
+    "patient_balanced_sample_weights": true
+  },
+  "calibration": {
+    "type": "sigmoid",
+    "training_source": "development OOF predictions"
+  },
+  "features": [
+    "glucose",
+    "slope_15m",
+    "slope_30m",
+    "slope_60m",
+    "slope_120m",
+    "glucose_mean_30m",
+    "glucose_min_30m",
+    "glucose_std_30m",
+    "glucose_mean_60m",
+    "glucose_min_60m",
+    "bolus_exposure_15m",
+    "bolus_exposure_30m",
+    "bolus_exposure_60m",
+    "bolus_exposure_120m",
+    "basal_exposure_30m",
+    "basal_exposure_60m",
+    "basal_exposure_120m",
+    "carb_exposure_30m",
+    "carb_exposure_60m",
+    "carb_exposure_120m",
+    "minutes_since_carb",
+    "hour_sin",
+    "hour_cos"
+  ],
+  "notes": [
+    "Final model trained only on development patients.",
+    "Held-out test patients were not used for training.",
+    "Alert threshold frozen at 0.50.",
+    "Retrospective proof-of-concept only.",
+    "Not clinically validated."
+  ]
+}
