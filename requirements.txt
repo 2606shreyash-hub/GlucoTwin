@@ -1,5 +1,9 @@
-pandas>=2.2
-numpy>=1.26
-scikit-learn>=1.5
-pyyaml>=6.0
-joblib>=1.4
+﻿numpy==2.5.3
+pandas==3.0.6
+scikit-learn==1.9.1
+scipy==1.18.1
+joblib
+PyYAML
+fastapi==0.142.2
+uvicorn==0.54.0
+pytest==9.1.1
